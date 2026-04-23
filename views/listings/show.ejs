@@ -1,0 +1,125 @@
+<% layout('/layouts/boilerplate.ejs') %>
+<script>
+    const mapToken =  process.env.MAP_TOKEN
+    const coordinates = JSON.stringify(findlistings.geometry.coordinates);
+    const location = JSON.stringify(findlistings.location);
+</script>
+<style>
+    .show-img {
+        height: 40vh;
+        object-fit: cover;
+    }
+    .btns {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    .review-card {
+        border-radius: 1rem;
+        transition: 0.3s;
+    }
+    .review-card:hover {
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .starability-basic {
+        min-width: 170px;
+    }
+    @media (max-width: 768px) {
+        .col-8, .col-6 {
+            width: 100% !important;
+            margin-left: 0 !important;
+        }
+    }
+</style>
+<div class="row">
+    <div class="col-8 offset-2 mt-3">
+        <h3><%= findlistings.title %></h3>
+    </div>
+    <div class="card col-8 offset-2 show-card listing-card">
+        <img src="<%= findlistings.image.url %>" class="card-img-top show-img" alt="listingimage">
+        <div class="card-body">
+            <p class="card-text">
+                <i>Owned by <%= findlistings.owner ? findlistings.owner.username : "Unknown" %></i>
+            </p>
+            <p class="card-text"><%= findlistings.description %></p>
+            <p class="card-text"><b>&#8377; <%= findlistings.price.toLocaleString("en-IN") %> / night</b></p>
+            <p class="card-text"><%= findlistings.location %>, <%= findlistings.country %></p>
+        </div>  
+    </div>
+</div>
+    <% if(currUser && findlistings.owner && currUser._id.equals(findlistings.owner._id)) { %>
+    <div class="btns">
+        <a class="btn btn-dark" href="/listings/<%= findlistings._id %>/edit"> Edit</a>
+
+        <form method="POST" action="/listings/<%= findlistings._id %>?_method=DELETE">
+            <button class="btn btn-dark">Delete</button>
+        </form>
+    </div>
+    <% } %>
+<hr />
+
+<% if(currUser) { %>
+<div class="col-8 offset-2">
+    <h4> Leave a  review </h4>
+    <form action="/listings/<%= findlistings._id %>/review" method="POST" novalidate class="needs-validation">
+        <!-- <div class="mb-3 mt-3">
+            <label for="rating" class="form-label">Rating</label>
+            <input class="form-range" type="range" min="1" max="5" id="rating" name="review[rating]">
+        </div>
+        <div class="mb-3 mt-3"> -->
+        <fieldset class="starability-basic">
+            <legend>First rating:</legend>
+            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+            <label for="first-rate1" title="Terrible">1 star</label>
+            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+            <label for="first-rate2" title="Not good">2 stars</label>
+            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+            <label for="first-rate3" title="Average">3 stars</label>
+            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+            <label for="first-rate4" title="Very good">4 stars</label>
+            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+            <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
+        </div>
+        <div>
+            <label for="comment" class="form-label">Comment</label>
+            <textarea class="form-control" name="review[comment]" id="comment" cols="30" rows="3" required></textarea>
+            <div class="invalid-feedback"> Please Write something.</div>
+        </div>
+        <button class="btn btn-dark">Submit</button>   
+    </form>  
+    <hr />
+    <% if(findlistings.reviews.length > 0) { %>
+    <div class="row">
+        <h4>All Reviews </h4>
+        <% for(let review of findlistings.reviews){ %>
+        <div class="col-sm-6 mb-3">
+            <div class="card review-card h-100"> 
+                <div class="card-body">
+                    <h5 class="card-title">@<%= review.author.username %></h5>    
+                    <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+                    <p class="card-text"> <%= review.comment %> </p>
+                </div>
+                <div class="card-footer bg-white border-0">
+                    <form method="POST" action="/listings/<%= findlistings._id %>/review/<%= review._id %>?_method=DELETE">
+                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div> 
+<% } %>
+<% } %> 
+
+<!-- Maps -->
+<div class="col-6 offset-3 mb-3" >
+    <h3> Where you'll be :-</h3>
+    <div id="map">
+
+    </div>
+</div>
+
+<script src="/js/map.js"> </script>

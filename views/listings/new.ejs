@@ -1,0 +1,50 @@
+<% layout('/layouts/boilerplate.ejs') %>
+    <div class="row">
+        <div class="col-8 offset-2">
+        <br /><br />
+    <h3> Create New Listing</h3></h3>
+    <form method="POST" action="/listings"novalidate class="needs-validation" enctype="multipart/form-data">
+        <div class="mb-3">
+             <label for="title" class="form-label">Title</label>
+        <input name="listing[title]" placeholder="enter title here.." class="form-control" required>
+        <div class="valid-feedback">
+            great!
+        </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="listing[description]" placeholder="enter description here.." class="form-control" required></textarea>
+        </div>
+        
+        <!-- <div class="mb-3">
+            <label for="image" class="form-label">Image</label> 
+            <input name="listing[image]" placeholder="enter image link here.." class="form-control" required>
+        </div> -->
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label> 
+            <input type="file" name="listing[image]" class="form-control" required>
+        </div>
+        
+        <div class="row">
+            <div class="mb-3 col-md-5">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" name="listing[price]" placeholder="enter price here.." required class="form-control" required>
+            </div>
+            <div class="mb-3 col-md-7">
+                <label for="country" class="form-label">Country</label>
+                <input name="listing[country]" placeholder="enter country here.." class="form-control" required>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input name="listing[location]" placeholder="enter location here.." class="form-control" required>
+        </div>
+        <br /><br />
+        <button class="btn btn-dark mb-3">Create</button>
+
+    </form>
+    </div>
+</div>

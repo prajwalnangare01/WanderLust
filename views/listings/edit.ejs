@@ -1,0 +1,44 @@
+<% layout('/layouts/boilerplate.ejs') %>
+<body>
+    <br /><br />
+    <h3> Edit Listing</h3></h3>
+    <form method="POST" action="/listings/<%= findlisting._id %>?_method=PUT" enctype="multipart/form-data">
+        <div class="mb-3">
+             <label for="title" class="form-label">Title</label>
+        <input name="listing[title]" value="<%= findlisting.title %>" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="listing[description]" class="form-control"><%= findlisting.description %></textarea>
+        </div>
+        
+        <div class="mb-3">
+            Original Image Preview :- <br />
+           <img src="<%= findlisting.image.url %>" >
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label> 
+            <input name="listing[image]" class="form-control"type="file">
+        </div>
+        
+        <div class="row">
+            <div class="mb-3 col-md-5">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" name="listing[price]" value="<%= findlisting.price %>" required class="form-control">
+            </div>
+            <div class="mb-3 col-md-7">
+                <label for="country" class="form-label">Country</label>
+                <input name="listing[country]" value="<%= findlisting.country %>" class="form-control">
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input name="listing[location]" value="<%= findlisting.location %>" class="form-control">
+        </div>
+        <br /><br />
+        <button class="btn btn-dark mb-3">Edit</button>
+    </form>
+</body>
