@@ -103,6 +103,9 @@ app.use( (req, res, next) =>{
 })
 
 app.use((err, req, res, next) =>{
+    if (res.headersSent) {
+        return next(err);
+    }
     let {statusCode = 500, message= "Something went wrong"} = err; // Destructure statusCode
     res.status(statusCode).render('error.ejs', {err}); // Use statusCode
 })
